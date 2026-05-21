@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appleton Merchandisers Simulator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+    /* ── Start Screen ── */
+    #start-overlay {
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at center, #0d1a2e 0%, #050d18 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 100; color: white;
+    }
+    #start-overlay.hidden { display: none; }
+
+    .appleton-logo {
+      width: 88px; height: 88px;
+      background: linear-gradient(135deg, #1565C0, #0D47A1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px; font-weight: 900; color: white;
+      margin-bottom: 22px;
+      box-shadow: 0 0 40px rgba(21,101,192,0.5);
+      letter-spacing: -2px;
+    }
+
+    .company-name {
+      font-size: 26px; font-weight: 700;
+      letter-spacing: 4px; color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .company-tagline {
+      font-size: 12px; color: #4a6080;
+      letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 56px;
+    }
+
+    .start-btn {
+      background: linear-gradient(135deg, #1565C0, #0D47A1);
+      color: white; border: none;
+      padding: 15px 48px; font-size: 15px; font-weight: 700;
+      border-radius: 8px; cursor: pointer;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: all 0.2s;
+      box-shadow: 0 4px 24px rgba(21,101,192,0.4);
+    }
+    .start-btn:hover {
+      background: linear-gradient(135deg, #1976D2, #1565C0);
+      box-shadow: 0 6px 32px rgba(21,101,192,0.6);
+      transform: translateY(-1px);
+    }
+
+    .controls-hint {
+      margin-top: 36px; font-size: 13px;
+      color: #2a4060; text-align: center; line-height: 2;
+    }
+
+    /* ── HUD ── */
+    #hud {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 50;
+    }
+    #hud.hidden { display: none; }
+
+    .crosshair {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 22px; height: 22px;
+    }
+    .crosshair::before, .crosshair::after {
+      content: ''; position: absolute; background: rgba(255,255,255,0.85);
+      border-radius: 1px;
+    }
+    .crosshair::before { width: 2px; height: 100%; left: 50%; transform: translateX(-50%); }
+    .crosshair::after  { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
+
+    #interaction-prompt {
+      position: absolute; bottom: 28%; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7); color: white;
+      padding: 8px 20px; border-radius: 6px;
+      font-size: 14px; font-weight: 500;
+      opacity: 0; transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    #interaction-prompt.visible { opacity: 1; }
+
+    .esc-hint {
+      position: absolute; top: 18px; right: 20px;
+      color: rgba(255,255,255,0.25); font-size: 12px; letter-spacing: 1px;
+    }
+
+    /* Appleton badge in-game (top-left) */
+    .hud-badge {
+      position: absolute; top: 18px; left: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hud-logo {
+      width: 32px; height: 32px;
+      background: #1565C0; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900; color: white;
+    }
+    .hud-company {
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Start Screen -->
+  <div id="start-overlay">
+    <div class="appleton-logo">A</div>
+    <div class="company-name">APPLETON MERCHANDISERS</div>
+    <div class="company-tagline">Field Merchandising Solutions</div>
+    <button class="start-btn" id="start-btn">Start Shift</button>
+    <div class="controls-hint">
+      W A S D &nbsp;—&nbsp; Move &nbsp;·&nbsp; Mouse &nbsp;—&nbsp; Look<br>
+      E &nbsp;—&nbsp; Interact &nbsp;·&nbsp; ESC &nbsp;—&nbsp; Pause
+    </div>
+  </div>
+
+  <!-- In-game HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-badge">
+      <div class="hud-logo">A</div>
+      <div class="hud-company">Appleton Merchandisers</div>
+    </div>
+    <div class="crosshair"></div>
+    <div id="interaction-prompt"></div>
+    <div class="esc-hint">ESC · pause</div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
