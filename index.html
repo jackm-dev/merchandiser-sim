@@ -57,7 +57,7 @@
 
     .controls-hint {
       margin-top: 36px; font-size: 13px;
-      color: #2a4060; text-align: center; line-height: 2;
+      color: #2a4060; text-align: center; line-height: 2.2;
     }
 
     /* ── HUD ── */
@@ -95,7 +95,151 @@
       color: rgba(255,255,255,0.25); font-size: 12px; letter-spacing: 1px;
     }
 
-    /* Appleton badge in-game (top-left) */
+    /* ── Phone Overlay ── */
+    #tablet-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.82);
+      display: none;
+      flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 200;
+      cursor: default;
+    }
+
+    .tablet-device-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateY(80%) scale(0.88);
+      opacity: 0;
+      transition: transform 0.42s cubic-bezier(0.34, 1.35, 0.64, 1),
+                  opacity 0.25s ease;
+    }
+
+    #tablet-overlay.tablet-open .tablet-device-wrap {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .tablet-device {
+      width: 360px;
+      background: #0A0A0A;
+      border-radius: 44px;
+      padding: 14px 10px 0;
+      box-shadow:
+        0 30px 90px rgba(0,0,0,0.8),
+        inset 0 0 0 1px rgba(255,255,255,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.22);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tablet-dynamic-island {
+      width: 110px; height: 32px;
+      background: #000;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+
+    .tablet-home-indicator {
+      width: 120px; height: 5px;
+      background: rgba(255,255,255,0.28);
+      border-radius: 3px;
+      margin: 10px 0 12px;
+      flex-shrink: 0;
+    }
+
+    .tablet-screen {
+      background: #F5F5F7;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 640px;
+    }
+
+    .tablet-status-bar {
+      background: #1565C0;
+      padding: 6px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .tablet-status-time { font-size: 12px; font-weight: 600; color: white; }
+    .tablet-status-icons { font-size: 11px; color: rgba(255,255,255,0.9); letter-spacing: 2px; }
+
+    .tablet-header {
+      background: #1565C0;
+      padding: 10px 16px 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .tablet-logo {
+      width: 36px; height: 36px;
+      background: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 900; color: #1565C0;
+      flex-shrink: 0;
+    }
+    .tablet-header-text { color: white; }
+    .tablet-app-name { font-size: 14px; font-weight: 800; letter-spacing: 2px; }
+    .tablet-app-sub  { font-size: 11px; opacity: 0.75; }
+
+    .tablet-body { flex: 1; padding: 14px 14px 8px; }
+
+    .tablet-section-label {
+      font-size: 10px; font-weight: 700;
+      color: #8E8E93; letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .task-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-left: 4px solid #1565C0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .task-card:hover { background: #F0F0F5; transform: translateX(2px); }
+    .task-card.active { background: #EEF4FF; }
+
+    .task-card-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 8px;
+      margin-bottom: 4px;
+    }
+    .task-type { font-size: 13px; font-weight: 700; color: #1C1C1E; }
+    .task-badge {
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 20px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .badge-pending { background: #E5E5EA; color: #636366; }
+    .badge-active  { background: #FF6D00; color: white; }
+    .badge-done    { background: #34C759; color: white; }
+
+    .task-location { font-size: 12px; color: #3A3A3C; margin-bottom: 3px; }
+    .task-detail   { font-size: 11px; color: #8E8E93; }
+
+    .tablet-footer {
+      background: #1C1C1E;
+      padding: 10px 20px;
+      display: flex; align-items: center;
+    }
+    .tablet-store { font-size: 11px; color: #8E8E93; letter-spacing: 1px; }
+
+    .tablet-hint {
+      margin-top: 14px;
+      font-size: 11px; color: rgba(255,255,255,0.28);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* ── Appleton badge in-game (top-left) ── */
     .hud-badge {
       position: absolute; top: 18px; left: 20px;
       display: flex; align-items: center; gap: 10px;
@@ -123,8 +267,39 @@
     <button class="start-btn" id="start-btn">Start Shift</button>
     <div class="controls-hint">
       W A S D &nbsp;—&nbsp; Move &nbsp;·&nbsp; Mouse &nbsp;—&nbsp; Look<br>
-      E &nbsp;—&nbsp; Interact &nbsp;·&nbsp; ESC &nbsp;—&nbsp; Pause
+      Tab &nbsp;—&nbsp; Open Phone &nbsp;·&nbsp; ESC &nbsp;—&nbsp; Pause
     </div>
+  </div>
+
+  <!-- Phone Overlay -->
+  <div id="tablet-overlay">
+    <div class="tablet-device-wrap">
+      <div class="tablet-device">
+        <div class="tablet-dynamic-island"></div>
+        <div class="tablet-screen">
+          <div class="tablet-status-bar">
+            <span class="tablet-status-time" id="tablet-status-time">--:--</span>
+            <span class="tablet-status-icons">lll &nbsp;&#8776;&nbsp; &#9646;</span>
+          </div>
+          <div class="tablet-header">
+            <div class="tablet-logo">A</div>
+            <div class="tablet-header-text">
+              <div class="tablet-app-name">APPLETON</div>
+              <div class="tablet-app-sub">Merchandising Console</div>
+            </div>
+          </div>
+          <div class="tablet-body">
+            <div class="tablet-section-label">TODAY'S TASKS</div>
+            <div id="tablet-task-list"></div>
+          </div>
+          <div class="tablet-footer">
+            <span class="tablet-store">STORE #4821</span>
+          </div>
+        </div>
+        <div class="tablet-home-indicator"></div>
+      </div>
+    </div>
+    <div class="tablet-hint">Press Tab to put away</div>
   </div>
 
   <!-- In-game HUD -->
@@ -135,7 +310,7 @@
     </div>
     <div class="crosshair"></div>
     <div id="interaction-prompt"></div>
-    <div class="esc-hint">ESC · pause</div>
+    <div class="esc-hint">Tab · phone &nbsp;|&nbsp; ESC · pause</div>
   </div>
 
   <script type="module" src="/src/main.js"></script>

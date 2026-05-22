@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { createStore } from './store.js';
 import { Player } from './player.js';
+import { Tablet } from './tablet.js';
 
 // ── Scene ─────────────────────────────────────────────────────────────────────
 const scene = new THREE.Scene();
@@ -30,6 +31,8 @@ const startOverlay = document.getElementById('start-overlay');
 const hud          = document.getElementById('hud');
 const startBtn     = document.getElementById('start-btn');
 
+const tablet = new Tablet(player.controls);
+
 startBtn.addEventListener('click', () => player.controls.lock());
 
 player.controls.addEventListener('lock', () => {
@@ -38,6 +41,7 @@ player.controls.addEventListener('lock', () => {
 });
 
 player.controls.addEventListener('unlock', () => {
+  if (tablet.isOpen) return;
   startOverlay.classList.remove('hidden');
   hud.classList.add('hidden');
 });
