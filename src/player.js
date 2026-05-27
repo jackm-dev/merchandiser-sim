@@ -11,12 +11,10 @@ export class Player {
 
     // Collision boxes for shelf gondolas [minX, maxX, minZ, maxZ]
     this.colliders = [
-      // Left gondola of OTC aisle
-      [-2.35, -1.5, -8.5, 8.5],
-      // Right gondola of OTC aisle
-      [1.5, 2.35, -8.5, 8.5],
-      // Endcap at back of aisle
-      [-2.5, 2.5, -10.8, -9.2],
+      // Left gondola run (inner + outer back-to-back) + end caps
+      [-1.82, -0.70, -4.58, 4.58],
+      // Right gondola run (inner + outer back-to-back) + end caps
+      [ 0.70,  1.82, -4.58, 4.58],
     ];
 
     this._initKeyEvents();

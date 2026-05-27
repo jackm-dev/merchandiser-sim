@@ -329,23 +329,57 @@ function createWalls(scene) {
 }
 
 function createOTCAisle(scene) {
-  const GONDOLA_LENGTH = 17; // aisle runs z = -8.5 to +8.5
-  const LEFT_X  = -1.925;
-  const RIGHT_X =  1.925;
+  const GONDOLA_LENGTH = 8;          // aisle runs z = -4 to +4
+  const HALF_L  = GONDOLA_LENGTH / 2;
+  const INNER_X = 1.0;               // inner gondola center (faces aisle)
+  const OUTER_X = 1.54;              // outer gondola center (back-to-back, INNER_X + 0.54)
 
-  // Left gondola
-  const leftGond = buildGondola(GONDOLA_LENGTH);
-  leftGond.position.set(LEFT_X, 0, 0);
-  leftGond.rotation.y = 0; // faces +x (toward aisle center)
-  scene.add(leftGond);
-  addProductsToGondola(scene, LEFT_X, 0, GONDOLA_LENGTH, +1);
+  // Left inner — faces +x (toward aisle center)
+  const leftInner = buildGondola(GONDOLA_LENGTH);
+  leftInner.position.set(-INNER_X, 0, 0);
+  scene.add(leftInner);
+  addProductsToGondola(scene, -INNER_X, 0, GONDOLA_LENGTH, +1);
 
-  // Right gondola
-  const rightGond = buildGondola(GONDOLA_LENGTH);
-  rightGond.position.set(RIGHT_X, 0, 0);
-  rightGond.rotation.y = Math.PI; // faces -x (toward aisle center)
-  scene.add(rightGond);
-  addProductsToGondola(scene, RIGHT_X, 0, GONDOLA_LENGTH, -1);
+  // Left outer — faces -x (back-to-back with inner)
+  const leftOuter = buildGondola(GONDOLA_LENGTH);
+  leftOuter.position.set(-OUTER_X, 0, 0);
+  leftOuter.rotation.y = Math.PI;
+  scene.add(leftOuter);
+  addProductsToGondola(scene, -OUTER_X, 0, GONDOLA_LENGTH, -1);
+
+  // Right inner — faces -x (toward aisle center)
+  const rightInner = buildGondola(GONDOLA_LENGTH);
+  rightInner.position.set(INNER_X, 0, 0);
+  rightInner.rotation.y = Math.PI;
+  scene.add(rightInner);
+  addProductsToGondola(scene, INNER_X, 0, GONDOLA_LENGTH, -1);
+
+  // Right outer — faces +x (back-to-back with inner)
+  const rightOuter = buildGondola(GONDOLA_LENGTH);
+  rightOuter.position.set(OUTER_X, 0, 0);
+  scene.add(rightOuter);
+  addProductsToGondola(scene, OUTER_X, 0, GONDOLA_LENGTH, +1);
+
+  // ── Endcap frames at aisle ends (no products yet) ──
+  // One cap per gondola-run side (left and right), at both the front and back end.
+  // Each cap spans the 1.1m width of one run and is rotated 90° to face the cross-aisle.
+  const CAP_SPAN   = 1.12;                // matches left/right run width (~INNER+OUTER depth)
+  const CAP_OFFSET = HALF_L + 0.27;      // z center = aisle end + half gondola depth
+  const CAP_CX     = (INNER_X + OUTER_X) / 2; // x center of each run = 1.27
+
+  for (const cx of [-CAP_CX, CAP_CX]) {
+    // Front end (faces +z toward approaching player)
+    const frontCap = buildGondola(CAP_SPAN);
+    frontCap.rotation.y = -Math.PI / 2;
+    frontCap.position.set(cx, 0, CAP_OFFSET);
+    scene.add(frontCap);
+
+    // Back end (faces -z toward back wall)
+    const backCap = buildGondola(CAP_SPAN);
+    backCap.rotation.y = Math.PI / 2;
+    backCap.position.set(cx, 0, -CAP_OFFSET);
+    scene.add(backCap);
+  }
 }
 
 function createEndcap(scene) {
@@ -482,7 +516,6 @@ export function createStore(scene) {
   createCeiling(scene);
   createWalls(scene);
   createOTCAisle(scene);
-  createEndcap(scene);
   createAisleSign(scene);
   createSurroundingShelves(scene);
 }
